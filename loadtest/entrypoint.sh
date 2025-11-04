@@ -14,7 +14,7 @@ cat > /loadtest/config/environments/railway.json <<EOF
     "destinationUrl": "https://httpbin.org/post",
     "verificationPollTimeout": "5s"
   },
-  "redis": ""
+  "redis": "${REDIS_URL:-redis://localhost:6379}"
 }
 EOF
 
