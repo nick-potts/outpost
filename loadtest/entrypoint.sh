@@ -1,12 +1,15 @@
 #!/bin/sh
 set -e
 
+# Set defaults
+REDIS_URL="${REDIS_URL:-redis://localhost:6379}"
+
 # Create railway config with runtime OUTPOST_URL
 cat > /loadtest/config/environments/railway.json <<EOF
 {
   "name": "railway",
   "api": {
-    "baseUrl": "${OUTPOST_URL}",
+    "baseUrl": "$OUTPOST_URL",
     "timeout": "30s"
   },
   "mockWebhook": {
@@ -14,15 +17,15 @@ cat > /loadtest/config/environments/railway.json <<EOF
     "destinationUrl": "https://httpbin.org/post",
     "verificationPollTimeout": "5s"
   },
-  "redis": "${REDIS_URL:-redis://localhost:6379}"
+  "redis": "$REDIS_URL"
 }
 EOF
 
 echo "Created railway config with OUTPOST_URL: ${OUTPOST_URL}"
 cat /loadtest/config/environments/railway.json
 
-# Generate TESTID if not set
-TESTID=${TESTID:-$(date +%s)}
+# Generate random TESTID to ensure unique tenant each run
+TESTID=$(date +%s)-$RANDOM
 echo "Running test with TESTID: ${TESTID}"
 
 # Run k6 test
