@@ -1,6 +1,5 @@
 FROM grafana/k6:latest
 
-# Install Node.js for TypeScript compilation (k6 doesn't need it at runtime, but good for development)
 USER root
 
 # Copy loadtest files
@@ -15,11 +14,25 @@ COPY run-test.sh ./
 RUN chmod +x run-test.sh
 
 # Set default environment variables (can be overridden in Railway)
-ENV ENVIRONMENT=local
+ENV ENVIRONMENT=railway
 ENV SCENARIO=basic
 ENV TESTID=0
 
-# Default command - run the throughput test
-# Override in Railway with: CMD ["run", "/loadtest/src/tests/events-throughput.ts"]
+# Default command - creates railway config at runtime with OUTPOST_URL
 ENTRYPOINT ["sh", "-c"]
-CMD ["TESTID=${TESTID:-$(date +%s)} k6 run -e ENVIRONMENT=${ENVIRONMENT} -e SCENARIO=${SCENARIO} -e API_KEY=${API_KEY} -e TESTID=${TESTID} /loadtest/src/tests/events-throughput.ts"]
+CMD ["cat > /loadtest/config/environments/railway.json <<EOF\n\
+{\n\
+  \"name\": \"railway\",\n\
+  \"api\": {\n\
+    \"baseUrl\": \"${OUTPOST_URL}\",\n\
+    \"timeout\": \"30s\"\n\
+  },\n\
+  \"mockWebhook\": {\n\
+    \"url\": \"https://httpbin.org/post\",\n\
+    \"destinationUrl\": \"https://httpbin.org/post\",\n\
+    \"verificationPollTimeout\": \"5s\"\n\
+  },\n\
+  \"redis\": \"\"\n\
+}\n\
+EOF\n\
+&& TESTID=${TESTID:-$(date +%s)} k6 run -e ENVIRONMENT=${ENVIRONMENT} -e SCENARIO=${SCENARIO} -e API_KEY=${API_KEY} -e TESTID=${TESTID} /loadtest/src/tests/events-throughput.ts"]

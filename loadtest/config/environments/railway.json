@@ -1,0 +1,13 @@
+{
+  "name": "railway",
+  "api": {
+    "baseUrl": "${OUTPOST_URL}",
+    "timeout": "30s"
+  },
+  "mockWebhook": {
+    "url": "https://httpbin.org/post",
+    "destinationUrl": "https://httpbin.org/post",
+    "verificationPollTimeout": "5s"
+  },
+  "redis": ""
+}
