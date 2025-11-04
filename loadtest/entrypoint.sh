@@ -1,9 +1,6 @@
 #!/bin/sh
 set -e
 
-# Set defaults
-REDIS_URL="${REDIS_URL:-redis://localhost:6379}"
-
 # Create railway config with runtime OUTPOST_URL
 cat > /loadtest/config/environments/railway.json <<EOF
 {
