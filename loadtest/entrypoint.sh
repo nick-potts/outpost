@@ -9,7 +9,7 @@ cat > /loadtest/config/environments/railway.json <<EOF
 {
   "name": "railway",
   "api": {
-    "baseUrl": "$OUTPOST_URL",
+    "baseUrl": "${OUTPOST_URL}",
     "timeout": "30s"
   },
   "mockWebhook": {
@@ -17,7 +17,7 @@ cat > /loadtest/config/environments/railway.json <<EOF
     "destinationUrl": "https://httpbin.org/post",
     "verificationPollTimeout": "5s"
   },
-  "redis": "$REDIS_URL"
+  "redis": "${REDIS_URL:-redis://localhost:6379}"
 }
 EOF
 
