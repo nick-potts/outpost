@@ -2,6 +2,9 @@ FROM grafana/k6:latest
 
 USER root
 
+# Install curl for API calls in entrypoint
+RUN apk add --no-cache curl
+
 # Copy loadtest files
 WORKDIR /loadtest
 COPY package*.json ./
