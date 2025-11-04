@@ -25,8 +25,8 @@ cat /loadtest/config/environments/railway.json
 TESTID=$(date +%s)-$RANDOM
 echo "Running test with TESTID: ${TESTID}"
 
-# If running 100k benchmark, setup destinations
-if [ "$SCENARIO" = "100k-benchmark" ]; then
+# If running benchmark scenarios, setup destinations
+if [ "$SCENARIO" = "100k-benchmark" ] || [ "$SCENARIO" = "10k-benchmark" ]; then
   echo ""
   echo "=== 100k Benchmark Setup ==="
   TENANT_ID="test-tenant-${TESTID}"

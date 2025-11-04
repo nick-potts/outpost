@@ -1,0 +1,19 @@
+{
+  "options": {
+    "scenarios": {
+      "events": {
+        "executor": "constant-arrival-rate",
+        "rate": 10000,
+        "timeUnit": "1s",
+        "duration": "60s",
+        "preAllocatedVUs": 2000,
+        "maxVUs": 3000
+      }
+    },
+    "thresholds": {
+      "http_req_duration": ["p(95)<1000", "p(99)<2000"],
+      "http_req_failed": ["rate<0.05"],
+      "event_publish_success_rate": ["rate>=0.95"]
+    }
+  }
+}
