@@ -1,0 +1,12 @@
+node_modules
+*.log
+.DS_Store
+.git
+.github
+docs
+infra
+grafana
+mock
+scripts
+compose.yml
+README.md
